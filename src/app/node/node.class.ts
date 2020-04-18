@@ -7,5 +7,6 @@ export class Node<T> implements INode<T> {
 
   constructor(value: T) {
     this.value = value;
+    this.next = this.prev = null;
   }
 }

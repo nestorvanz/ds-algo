@@ -3,7 +3,7 @@ import 'mocha';
 
 import { List } from "./list.class";
 
-describe('Stack', () => {
+describe('List', () => {
   let list: List<number>;
 
   beforeEach(() => {
