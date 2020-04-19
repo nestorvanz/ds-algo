@@ -5,13 +5,13 @@ import { Queue } from "../queue/queue.class";
 type Filter<T> = (value: T) => boolean
 
 export class Graph<T> {
-  private _root: Node<T>;
+  private _list: List<T>;
 
-  constructor(root: Node<T> = null) {
-    this._root = root;
+  constructor(root: List<T> = null) {
+    this._list = root;
   }
 
-  get root(): Node<T> { return this._root; }
+  get list(): List<T> { return this._list; }
 
   public breadthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
     const queue: Queue<T> = new Queue();

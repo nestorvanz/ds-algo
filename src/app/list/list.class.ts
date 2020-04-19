@@ -7,9 +7,13 @@ export class List<T> implements IList<T> {
   _last: Node<T>;
   _length: number;
 
-  constructor () {
+  constructor (nodes: Node<T>[] = []) {
     this._root = this._last = null;
     this._length = 0;
+
+    for (const node of nodes) {
+      this.addNode(node);
+    }
   }
 
   get root(): Node<T> { return this._root; }
@@ -17,7 +21,10 @@ export class List<T> implements IList<T> {
   get length(): number { return this._length; }
 
   public add(value: T) {
-    const node: Node<T> = new Node(value);
+    this.addNode(new Node(value));
+  }
+
+  public addNode(node: Node<T>) {
     node.prev = this._last;
     if (this._last) {
       this._last.next = node;
@@ -26,10 +33,6 @@ export class List<T> implements IList<T> {
       this._root = node;
     }
     this._last = node;
-
-    // this.checkRoot(node);
-    // this._last.next = node;
-    // this._last = node;
     this._length ++;
   }
 

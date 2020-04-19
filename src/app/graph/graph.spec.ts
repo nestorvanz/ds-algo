@@ -3,6 +3,7 @@ import 'mocha';
 
 import { Graph } from "./graph.class";
 import { Node } from "../node/node.class";
+import { List } from '../list/list.class';
 
 describe('Graph', () => {
   //    -- Graph --
@@ -32,17 +33,18 @@ describe('Graph', () => {
     nodes[2].neighbours = [nodes[5]];
     nodes[5].neighbours = [nodes[6], nodes[7]];
 
-    graph = new Graph(nodes[0]);
+    // graph = new Graph(nodes[0]);
+    graph = new Graph(new List<number>(nodes));
   })
 
   
   it('breadthFirstSearch: should be equal to array bfs', () => {
-    const result = graph.breadthFirstSearch(graph.root).toArray();
+    const result = graph.breadthFirstSearch(graph.list.root).toArray();
     expect(result.toString()).to.equal(bfs.toString());
   });
 
   it('depthFirstSearch: should be equal to array dfs', () => {
-    const result = graph.depthFirstSearch(graph.root).toArray();
+    const result = graph.depthFirstSearch(graph.list.root).toArray();
     expect(result.toString()).to.equal(dfs.toString());
   });
 });
