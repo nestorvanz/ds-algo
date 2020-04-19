@@ -2,12 +2,14 @@ import { IGraphNode } from "./graph-node.interface";
 
 export class GraphNode<T> implements IGraphNode<T> {
   value: T;
-  visited: boolean;
   neighbours: number[];
+  visited: boolean;
+  pushed: boolean;
 
   constructor(value: T, neighbours: number[] = []) {
     this.value = value;
-    this.visited = false;
     this.neighbours = neighbours;
+    this.visited = false;
+    this.pushed = false;
   }
 }
