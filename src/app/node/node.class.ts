@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import { INode } from "./node.interface";
 
 export class Node<T> implements INode<T> {
+  id: string;
   value: T;
   next: INode<T>;
   prev: INode<T>;
@@ -9,6 +11,7 @@ export class Node<T> implements INode<T> {
   pushed: boolean;
 
   constructor(value: T) {
+    this.id = uuidv4();
     this.value = value;
     this.next = this.prev = null;
     this.neighbours = [];
