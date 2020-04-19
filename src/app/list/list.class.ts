@@ -3,9 +3,9 @@ import { IList } from "./list.interface";
 import { Filter } from "../../types";
 
 export class List<T> implements IList<T> {
-  _root: Node<T>;
-  _last: Node<T>;
-  _length: number;
+  protected _root: Node<T>;
+  protected _last: Node<T>;
+  protected _length: number;
 
   constructor (nodes: Node<T>[] = []) {
     this._root = this._last = null;

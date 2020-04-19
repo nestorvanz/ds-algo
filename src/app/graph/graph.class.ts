@@ -1,14 +1,14 @@
 import { Node } from "../node/node.class";
 import { List } from "../list/list.class";
 import { Queue } from "../queue/queue.class";
+import { IGraph } from "./graph.interface";
+import { Filter } from "../../types";
 
-type Filter<T> = (value: T) => boolean
+export class Graph<T> implements IGraph<T> {
+  protected _list: List<T>;
 
-export class Graph<T> {
-  private _list: List<T>;
-
-  constructor(root: List<T> = null) {
-    this._list = root;
+  constructor(list: List<T> = new List()) {
+    this._list = list;
   }
 
   get list(): List<T> { return this._list; }
