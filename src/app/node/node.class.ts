@@ -4,9 +4,9 @@ import { INode } from "./node.interface";
 export class Node<T> implements INode<T> {
   id: string;
   value: T;
-  next: INode<T>;
-  prev: INode<T>;
-  neighbours: INode<T>[];
+  next: Node<T>;
+  prev: Node<T>;
+  neighbours: Node<T>[];
   visited: boolean;
   pushed: boolean;
 

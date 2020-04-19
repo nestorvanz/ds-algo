@@ -6,50 +6,57 @@ type Filter<T> = (value: T) => boolean
 
 export class Graph<T> {
   private _root: Node<T>;
-  private list: List<T>;
-  private queue: Queue<T>;
 
   constructor(root: Node<T> = null) {
     this._root = root;
-    this.list = new List();
-    this.queue = new Queue();
   }
 
   get root(): Node<T> { return this._root; }
 
-  breadthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
-    if (this.queue.length == 0) this.pushNode(node);
+  public breadthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
+    const queue: Queue<T> = new Queue();
+    this.bfs(queue, node, filter);
+    return queue;
+  }
+  
+  private bfs(queue: Queue<T>, node: Node<T>, filter?: Filter<T>) {
+    if (queue.length == 0) this.enqueueNode(queue, node);
     for (let neighbour of node.neighbours) {
       if (!neighbour.pushed) {
-        this.pushNode(neighbour);
+        this.enqueueNode(queue, neighbour);
       }
     }
     for (let neighbour of node.neighbours) {
-      this.breadthFirstSearch(neighbour, filter);
+      this.bfs(queue, neighbour, filter);
     }
-    return this.queue;
+  }
+  
+  public depthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
+    const list: List<T> = new List();
+    this.dfs(list, node, filter);
+    return list;
   }
 
-  depthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
-    if (node.visited) return;
-    this.visitNode(node, filter);
+  private dfs(list: List<T>, node: Node<T>, filter?: Filter<T>): List<T> {
+    if (node.visited) return list;
+    this.visitNode(list, node, filter);
     for (let neighbour of node.neighbours) {
-      this.depthFirstSearch(neighbour, filter);
+      this.dfs(list, neighbour, filter);
     }
-    return this.list;
+    return list;
   }
 
-  private pushNode(node: Node<T>, filter?: Filter<T>) {
+  private enqueueNode(queue: Queue<T>, node: Node<T>, filter?: Filter<T>) {
     node.pushed = true;
     if ((filter && filter(node.value)) || !filter) {
-      this.queue.enqueue(node.value);
+      queue.enqueue(node.value);
     }
   }
 
-  private visitNode(node: Node<T>, filter?: Filter<T>) {
+  private visitNode(list: List<T>, node: Node<T>, filter?: Filter<T>) {
     node.visited = true;
     if ((filter && filter(node.value)) || !filter) {
-      this.list.add(node.value);
+      list.add(node.value);
     }
   }
 }
