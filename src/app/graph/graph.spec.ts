@@ -28,6 +28,7 @@ describe('Graph', () => {
     }
     nodes[0].neighbours = [nodes[1], nodes[2]];
     nodes[1].neighbours = [nodes[3], nodes[4]];
+    nodes[3].neighbours = [nodes[4]];
     nodes[2].neighbours = [nodes[5]];
     nodes[5].neighbours = [nodes[6], nodes[7]];
 

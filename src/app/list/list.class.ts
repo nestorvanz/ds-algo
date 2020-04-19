@@ -18,9 +18,18 @@ export class List<T> implements IList<T> {
 
   public add(value: T) {
     const node: Node<T> = new Node(value);
-    this.checkRoot(node);
-    this._last.next = node;
+    node.prev = this._last;
+    if (this._last) {
+      this._last.next = node;
+    }
+    if (this._root == null) {
+      this._root = node;
+    }
     this._last = node;
+
+    // this.checkRoot(node);
+    // this._last.next = node;
+    // this._last = node;
     this._length ++;
   }
 
@@ -41,6 +50,18 @@ export class List<T> implements IList<T> {
       node = node.next;
     }
     return list;
+  }
+
+  public reverse() {
+    let node = this._root;
+    this._root = this._last;
+    this._last = node;
+    while (node != null) {
+      const next = node.next;
+      node.next = node.prev;
+      node.prev = next;
+      node = node.prev;
+    }
   }
 
   public toArray(): T[] {
