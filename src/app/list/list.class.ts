@@ -7,12 +7,12 @@ export class List<T> implements IList<T> {
   protected _last: Node<T>;
   protected _length: number;
 
-  constructor (nodes: Node<T>[] = []) {
+  constructor(nodes: T[] = []) {
     this._root = this._last = null;
     this._length = 0;
 
     for (const node of nodes) {
-      this.addNode(node);
+      this.add(node);
     }
   }
 
@@ -69,13 +69,24 @@ export class List<T> implements IList<T> {
 
   public toArray(): T[] {
     let array: T[] = [];
-    let node: Node<T> = this._root;
-    let count = 0;
-    while (count < this.length) {
-      array.push(node.value);
-      node = node.next;
-      count ++;
-    }
+    this.forEach(node => {
+      array.push(node.value)
+    });
+    // let node: Node<T> = this._root;
+    // let count = 0;
+    // while (count < this.length) {
+    //   array.push(node.value);
+    //   node = node.next;
+    //   count ++;
+    // }
     return array;
+  }
+
+  public forEach(callback: (node: Node<T>) => void) {
+    let node = this.root;
+    while (node != null) {
+      callback(node);
+      node = node.next;
+    }
   }
 }

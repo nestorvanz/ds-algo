@@ -7,56 +7,60 @@ import { Filter } from "../../types";
 export class Graph<T> implements IGraph<T> {
   protected _list: List<T>;
 
-  constructor(list: List<T> = new List()) {
-    this._list = list;
+  constructor(nodes: Node<T>[] = []) {
+    this._list = new List();
+    for (const node of nodes) {
+      this._list.addNode(node);
+    }
   }
 
   get list(): List<T> { return this._list; }
 
   public breadthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
-    const queue: Queue<T> = new Queue();
-    this.bfs(queue, node, filter);
-    return queue;
-  }
-  
-  private bfs(queue: Queue<T>, node: Node<T>, filter?: Filter<T>) {
-    if (queue.length == 0) this.enqueueNode(queue, node);
-    for (let neighbour of node.neighbours) {
-      if (!neighbour.pushed) {
-        this.enqueueNode(queue, neighbour);
+    const list: List<T> = new List();
+    const queue: Queue<T> = new Queue(); 
+    const visited = new Set<string>([node.id]);
+
+    bfs(node);
+    return list;
+
+    function bfs(node: Node<T>) {
+      if (node == null) return;
+      
+      if ((filter && filter(node.value)) || !filter) {
+        list.add(node.value);
       }
-    }
-    for (let neighbour of node.neighbours) {
-      this.bfs(queue, neighbour, filter);
-    }
+
+      node.neighbours.forEach(neighbour => {
+        if (!visited.has(neighbour.id)) {
+          queue.enqueueNode(neighbour);
+          visited.add(neighbour.id);
+        }
+      });
+
+      bfs(queue.dequeueNode());
+    }    
   }
   
   public depthFirstSearch(node: Node<T>, filter?: Filter<T>): List<T> {
     const list: List<T> = new List();
-    this.dfs(list, node, filter);
+    const visited = new Set<string>();
+
+    dfs(node);
+
+    function dfs(node: Node<T>) {
+      if (visited.has(node.id)) return;
+      visited.add(node.id);
+
+      if ((filter && filter(node.value)) || !filter) {
+        list.add(node.value);
+      }
+
+      node.neighbours.forEach(neighbour => {
+        dfs(neighbour);
+      });
+    }
+
     return list;
-  }
-
-  private dfs(list: List<T>, node: Node<T>, filter?: Filter<T>): List<T> {
-    if (node.visited) return list;
-    this.visitNode(list, node, filter);
-    for (let neighbour of node.neighbours) {
-      this.dfs(list, neighbour, filter);
-    }
-    return list;
-  }
-
-  private enqueueNode(queue: Queue<T>, node: Node<T>, filter?: Filter<T>) {
-    node.pushed = true;
-    if ((filter && filter(node.value)) || !filter) {
-      queue.enqueue(node.value);
-    }
-  }
-
-  private visitNode(list: List<T>, node: Node<T>, filter?: Filter<T>) {
-    node.visited = true;
-    if ((filter && filter(node.value)) || !filter) {
-      list.add(node.value);
-    }
   }
 }

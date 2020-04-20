@@ -12,9 +12,13 @@ export class Stack<T> extends List<T> {
   }
 
   pop(): T {
-    const node: Node<T> = this.last;
+    const node = this.last;
     this._last = this._last.prev;
-    if (!this.last) this._root = null;
+    if (this._last) {
+      this._last.next = null
+    } else {
+      this._root = null;
+    }
     this._length --;
     return node.value;
   }
